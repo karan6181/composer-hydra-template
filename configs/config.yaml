@@ -15,11 +15,14 @@ defaults:
   - algorithms: null 
   - experiment: null
 
+seed: 42
+name: karan-hydra-test-run
+
 hydra:
   sweeper:
+    _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
     params:
-      seed: 42, 43, 44
-      name: karan-hydra-test-run-42, karan-hydra-test-run-43, karan-hydra-test-run-44
+      optimizers.lr: tag(log, interval(0.00001, 0.01))
 
 
 
