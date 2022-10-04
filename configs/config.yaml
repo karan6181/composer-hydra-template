@@ -15,8 +15,11 @@ defaults:
   - algorithms: null 
   - experiment: null
 
-seed: 42
-name: karan-hydra-test-run
+hydra:
+  sweeper:
+    params:
+      seed: 42, 43, 44
+      name: karan-hydra-test-run-42, karan-hydra-test-run-43, karan-hydra-test-run-44
 
 
 
