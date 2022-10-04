@@ -1,5 +1,5 @@
 run_name: karan-resnet50-hydra-baseline
-platform: r1z2
+platform: r7z2
 gpu_type: a100_40gb
 gpu_num: 4
 optimization_level: 0

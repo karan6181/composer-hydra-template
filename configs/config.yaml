@@ -4,7 +4,7 @@ defaults:
   - _self_                     # <-- configs defined in this yaml. They are overwritten by all following defaults
   - model: cifar_resnet.yaml
   - dataset: streaming_cifar10.yaml
-  - logger: null
+  - logger: wandb.yaml
   - optimizer: default.yaml
   - scheduler: default.yaml
   - callbacks:  

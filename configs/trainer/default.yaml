@@ -1,6 +1,6 @@
 _target_: composer.Trainer
 device: gpu
-max_duration: 160ep
+max_duration: 10ep
 grad_accum: auto
 run_name: ${name}
 seed: ${seed}
