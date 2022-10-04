@@ -4,5 +4,4 @@ num_classes: 10
 initializers:
   - kaiming_normal
   - bn_uniform
-trainer:
-  max_duration: 10ep
+max_duration: 10ep
