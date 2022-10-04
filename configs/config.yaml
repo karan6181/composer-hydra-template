@@ -15,8 +15,11 @@ defaults:
   - algorithms: null 
   - experiment: null
 
+trainer:
+  max_duration: 10ep
+
 seed: 42
-name: hydra-test-run
+name: karan-hydra-test-run
 
 
 

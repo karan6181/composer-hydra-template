@@ -1,4 +1,4 @@
 wandb:
   _target_: composer.loggers.wandb_logger.WandBLogger
   name: ${name}
-  project: hydra-test
+  project: Karan-Hydra

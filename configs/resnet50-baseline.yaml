@@ -1,0 +1,16 @@
+run_name: karan-resnet50-hydra-baseline
+platform: r1z2
+gpu_type: a100_40gb
+gpu_num: 1
+optimization_level: 0
+image: mosaicml/composer:0.9.0
+integrations:
+  - integration_type: git_repo
+    git_repo: karan6181/composer-hydra-template
+    git_branch: testing
+command: |
+  echo "Installing dependencies"
+  cd composer-hydra-template
+  pip install -r requirements.txt
+  echo "Launching run"
+  composer -n 1 run.py
