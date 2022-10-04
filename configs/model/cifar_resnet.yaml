@@ -4,4 +4,3 @@ num_classes: 10
 initializers:
   - kaiming_normal
   - bn_uniform
-max_duration: 10ep
