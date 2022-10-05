@@ -140,7 +140,8 @@ def train(config: DictConfig) -> None:
 
     if version == '0.9.0':
         metric = trainer.state.eval_metrics['eval']['Accuracy'].compute()
-    metric = trainer.state.current_metrics['eval']['Accuracy']
+    else:
+        metric = trainer.state.current_metrics['eval']['Accuracy']
 
     trainer.close()
     atexit.unregister(trainer.engine._close)
