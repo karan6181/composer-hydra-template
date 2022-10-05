@@ -4,3 +4,4 @@ max_duration: 10ep
 grad_accum: auto
 run_name: ${name}
 seed: ${seed}
+trainer_subset_num_batches: 10
