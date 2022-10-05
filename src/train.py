@@ -10,6 +10,11 @@ from composer.utils import dist, reproducibility
 from pyparsing import Optional
 from sympy import OmegaPower
 
+import torch
+
+torch.backends.cudnn.benchmark=False
+torch.backends.cudnn.deterministic=True
+
 
 def train(config: DictConfig) -> None:
     """
