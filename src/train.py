@@ -9,6 +9,7 @@ from composer.core.evaluator import Evaluator
 from composer.utils import dist, reproducibility
 from pyparsing import Optional
 from sympy import OmegaPower
+from composer import __version__ as version
 
 # import torch
 
@@ -134,6 +135,6 @@ def train(config: DictConfig) -> None:
         callbacks=callbacks,
     )
     trainer.fit()
-    print("trainer state: ", trainer.state.current_metrics['eval']['Accuracy'])
-    print("trainer state dir: ", type(trainer.state.current_metrics['eval']['Accuracy']))
+    if version == '0.10.0':
+        return trainer.state.eval_metrics['eval']['Accuracy'].compute()
     return trainer.state.current_metrics['eval']['Accuracy']
