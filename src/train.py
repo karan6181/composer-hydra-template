@@ -138,5 +138,5 @@ def train(config: DictConfig) -> None:
     if version == '0.10.0':
         print("Inside composer 0.10")
         return trainer.state.eval_metrics['eval']['Accuracy'].compute()
-    print("Inside composer 0.9")
+    print("Inside composer: ", version)
     return trainer.state.current_metrics['eval']['Accuracy']
