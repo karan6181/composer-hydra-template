@@ -1,6 +1,7 @@
 batch_size: 1024
 train_batch_size: ${dataset.batch_size}
 eval_batch_size: ${dataset.batch_size}
+trainer_subset_num_batches: 10
 
 train_dataset:
   _target_: composer.datasets.cifar_hparams.StreamingCIFAR10Hparams
