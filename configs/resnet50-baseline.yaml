@@ -1,7 +1,7 @@
 run_name: karan-resnet50-hydra-baseline
 platform: r7z2
 gpu_type: a100_40gb
-gpu_num: 4
+gpu_num: 1
 optimization_level: 0
 image: mosaicml/composer:0.9.0
 integrations:
@@ -13,4 +13,5 @@ command: |
   cd composer-hydra-template
   pip install -r requirements.txt
   echo "Launching run"
-  composer -n 4 run.py
+  # composer -n 1 run.py trainer.max_duration=15ep
+  composer run.py -m ~callbacks.checkpoint experiment=resnet50_hydra_sweeper trainer.max_duration=2

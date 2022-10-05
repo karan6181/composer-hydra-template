@@ -127,4 +127,5 @@ def train(config: DictConfig) -> None:
         schedulers=scheduler,
         callbacks=callbacks,
     )
-    return trainer.fit()
+    trainer.fit()
+    return trainer.state.eval_metrics['eval']['Accuracy'].compute()
