@@ -10,6 +10,7 @@ from composer.utils import dist, reproducibility
 from pyparsing import Optional
 from sympy import OmegaPower
 from composer import __version__ as version
+import atexit
 
 # import torch
 
@@ -28,6 +29,7 @@ def train(config: DictConfig) -> None:
     """
 
     reproducibility.seed_all(config["seed"])
+    print(f"Composer version: {version}")
 
     model: ComposerModel = hydra.utils.instantiate(config.model)
 
@@ -135,6 +137,13 @@ def train(config: DictConfig) -> None:
         callbacks=callbacks,
     )
     trainer.fit()
+
     if version == '0.9.0':
-        return trainer.state.eval_metrics['eval']['Accuracy'].compute()
-    return trainer.state.current_metrics['eval']['Accuracy']
+        metric = trainer.state.eval_metrics['eval']['Accuracy'].compute()
+    metric = trainer.state.current_metrics['eval']['Accuracy']
+
+    trainer.close()
+    atexit.unregister(trainer.engine._close)
+    if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
+        trainer.state.train_dataloader._iterator._shutdown_workers()
+    return metric
