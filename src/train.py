@@ -134,6 +134,6 @@ def train(config: DictConfig) -> None:
         callbacks=callbacks,
     )
     trainer.fit()
-    print("trainer state: ", trainer.state.current_metrics())
-    print("trainer state dir: ", dir(trainer.state.current_metrics()))
+    # print("trainer state: ", trainer.state.current_metrics())
+    # print("trainer state dir: ", dir(trainer.state.current_metrics()))
     return trainer.state.current_metrics['eval']['Accuracy'].compute()
