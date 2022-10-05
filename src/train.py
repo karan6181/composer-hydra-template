@@ -10,11 +10,11 @@ from composer.utils import dist, reproducibility
 from pyparsing import Optional
 from sympy import OmegaPower
 
-import torch
+# import torch
 
 # torch.backends.cudnn.benchmark=False
 # torch.backends.cudnn.deterministic=True
-torch.backends.cuda.preferred_linalg_library("cusolver")
+# torch.backends.cuda.preferred_linalg_library("cusolver")
 
 
 def train(config: DictConfig) -> None:
@@ -134,4 +134,6 @@ def train(config: DictConfig) -> None:
         callbacks=callbacks,
     )
     trainer.fit()
+    print("trainer state: ", trainer.state)
+    print("trainer state dir: ", dir(trainer.state))
     return trainer.state.eval_metrics['eval']['Accuracy'].compute()
