@@ -4,7 +4,7 @@ defaults:
   - _self_                     # <-- configs defined in this yaml. They are overwritten by all following defaults
   - model: cifar_resnet.yaml
   - dataset: streaming_cifar10.yaml
-  - logger: wandb.yaml
+  - logger: null
   - optimizer: default.yaml
   - scheduler: default.yaml
   - callbacks:  
@@ -17,12 +17,6 @@ defaults:
 
 seed: 42
 name: karan-hydra-test-run
-
-hydra:
-  sweeper:
-    _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
-    params:
-      optimizers.lr: tag(log, interval(0.00001, 0.01))
 
 
 
