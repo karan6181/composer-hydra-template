@@ -11,6 +11,7 @@ from pyparsing import Optional
 from sympy import OmegaPower
 from composer import __version__ as version
 import atexit
+import gc
 
 # import torch
 
@@ -148,4 +149,13 @@ def train(config: DictConfig) -> None:
     atexit.unregister(trainer.engine._close)
     if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
         trainer.state.train_dataloader._iterator._shutdown_workers()
+    # Explicitly delete attributes of state as otherwise gc.collect() doesn't free memory
+    for key in list(trainer.state.__dict__.keys()):
+        delattr(trainer.state, key)
+    # Delete the rest of trainer attributes
+    for key in list(trainer.__dict__.keys()):
+        if key != 'benchmarker':
+            delattr(trainer, key)
+    gc.collect()
+    torch.cuda.empty_cache()
     return metric
