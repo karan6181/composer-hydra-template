@@ -143,9 +143,9 @@ def train(config: DictConfig) -> None:
     # else:
     #     metric = trainer.state.current_metrics['eval']['Accuracy']
 
-    # trainer.close()
-    # atexit.unregister(trainer.engine._close)
-    # if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
-        # trainer.state.train_dataloader._iterator._shutdown_workers()
     metric = trainer.state.eval_metrics['eval']['Accuracy'].compute()
+    trainer.close()
+    atexit.unregister(trainer.engine._close)
+    if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
+        trainer.state.train_dataloader._iterator._shutdown_workers()
     return metric
