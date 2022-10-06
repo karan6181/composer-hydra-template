@@ -156,6 +156,6 @@ def train(config: DictConfig) -> None:
     for key in list(trainer.__dict__.keys()):
         if key != 'benchmarker':
             delattr(trainer, key)
-    # gc.collect()
+    gc.collect()
     torch.cuda.empty_cache()
     return metric
