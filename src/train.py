@@ -19,6 +19,24 @@ import torch
 # torch.backends.cudnn.deterministic=True
 # torch.backends.cuda.preferred_linalg_library("cusolver")
 
+def reset_trainer(trainer: Trainer, garbage_collect: bool = False):
+    """Deletes all trainer attributes."""
+    trainer.close()
+    # Unregister engine from atexit to remove ref
+    atexit.unregister(trainer.engine._close)
+    # Close potentially persistent dataloader workers
+    if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
+        trainer.state.train_dataloader._iterator._shutdown_workers()  # type: ignore [reportGeneralTypeIssues]
+    # Explicitly delete attributes of state as otherwise gc.collect() doesn't free memory
+    for key in list(trainer.state.__dict__.keys()):
+        delattr(trainer.state, key)
+    # Delete the rest of trainer attributes
+    for key in list(trainer.__dict__.keys()):
+        delattr(trainer, key)
+    if garbage_collect:
+        gc.collect()
+        torch.cuda.empty_cache()
+
 
 def train(config: DictConfig) -> None:
     """
@@ -145,17 +163,18 @@ def train(config: DictConfig) -> None:
     #     metric = trainer.state.current_metrics['eval']['Accuracy']
 
     metric = trainer.state.eval_metrics['eval']['Accuracy'].compute()
-    trainer.close()
-    atexit.unregister(trainer.engine._close)
-    if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
-        trainer.state.train_dataloader._iterator._shutdown_workers()
-    # Explicitly delete attributes of state as otherwise gc.collect() doesn't free memory
-    for key in list(trainer.state.__dict__.keys()):
-        delattr(trainer.state, key)
-    # Delete the rest of trainer attributes
-    for key in list(trainer.__dict__.keys()):
-        if key != 'benchmarker':
-            delattr(trainer, key)
-    gc.collect()
-    torch.cuda.empty_cache()
+    # trainer.close()
+    # atexit.unregister(trainer.engine._close)
+    # if trainer.state.train_dataloader and trainer.state.train_dataloader._iterator is not None:  # type: ignore [reportGeneralTypeIssues]
+    #     trainer.state.train_dataloader._iterator._shutdown_workers()
+    # # Explicitly delete attributes of state as otherwise gc.collect() doesn't free memory
+    # for key in list(trainer.state.__dict__.keys()):
+    #     delattr(trainer.state, key)
+    # # Delete the rest of trainer attributes
+    # for key in list(trainer.__dict__.keys()):
+    #     if key != 'benchmarker':
+    #         delattr(trainer, key)
+    # gc.collect()
+    # torch.cuda.empty_cache()
+    reset_trainer(trainer=trainer, garbage_collect=True)
     return metric
