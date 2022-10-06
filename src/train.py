@@ -13,7 +13,7 @@ from composer import __version__ as version
 import atexit
 import gc
 
-# import torch
+import torch
 
 # torch.backends.cudnn.benchmark=False
 # torch.backends.cudnn.deterministic=True
